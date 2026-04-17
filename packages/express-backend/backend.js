@@ -1,9 +1,12 @@
 import express from "express";
+import cors from "cors";
 
 const app = express();
 const port = 8000;
 
+app.use(cors());
 app.use(express.json());
+
 
 // Sample data
 const users = {
@@ -71,8 +74,15 @@ app.get("/users/:id", (req, res) => {
 
 // 4. Add user
 app.post("/users", (req, res) => {
-  addUser(req.body);
-  res.send();
+  const newUser = {
+    id: Math.random().toString(36).substring(2, 9),
+    name: req.body.name,
+    job: req.body.job,
+  };
+
+  addUser(newUser);
+
+  res.status(201).send(newUser);
 });
 
 // 5. Delete user
